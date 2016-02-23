@@ -1,20 +1,53 @@
 exports.Register = function (req,res){
+
 	var util = require('util');
 	var userFacade = require('../facade/UserFacade');
-	req.checkBody(	'devloperName', 'Developer Name is required').notEmpty();
+	var userM = require('../models/user');
+	var appM = require('../models/app');
+	var accountLoopUpM = require('../models/accountLookUp');
+
+	req.checkBody('devloperName', 'Developer Name  is required').notEmpty();
 	req.checkBody('userName', 'User Name is required').notEmpty();
 	req.checkBody('appName', 'App Name is required').notEmpty();
 	req.checkBody('password', 'Password is required').notEmpty();
-	var errors = req.validationErrors();
+
+	req.check('devloperName', 'devloperName Taken').isFieldAvailable(userM,'name');
+
+	req.check('userName', 'Username Taken').isFieldAvailable(accountLoopUpM,'accountId');
+
+	req.check('appName', 'Username Taken').isFieldAvailable(appM,'name');
+	
+	req.asyncValidationErrors().then(function(){
+	userFacade.saveUser(req.body.devloperName,req.body.userName,req.body.password,req.body.appName).then(function(){
+		res.status(200).end('User saved');
+	
+	}).catch(function(error){
+	res.status(400).end('Unable to save user an error occured');
+
+	});
+
+
+	}).catch(function(errors) {
+		console.log('async');
+	  res.status(400).send(errors);
+	return false;
+	});
+
+
+
+
+
+
+
+
+/*	var errors = req.validationErrors();
   	if (errors) {
 	    res.status(400).send((errors));
 	    return;
 	}
-	userFacade.saveUser(req.body.devloperName,req.body.userName,req.body.password,req.body.appName).then(function(){
-		console.log('usersaved');
-	}).catch(function(error){
-		console.log('Main error error'+error);
-	});
+	return;
+*/
+
 
 ///	res.render('index', { title: 'Express' });
 }

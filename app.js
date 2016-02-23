@@ -4,7 +4,8 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-var expressValidator = require('express-validator');
+var validationHelper = require('./helpers/express_validation');
+
 var mongoose = require('mongoose');
 
 mongoose.connect('mongodb://localhost/myappdatabase');
@@ -22,7 +23,8 @@ app.set('view engine', 'jade');
 app.use(logger('dev'));
 app.use(bodyParser());
 //app.use(bodyParser.urlencoded({ extended: false }));
-app.use(expressValidator());
+//app.use(expressValidator());
+app.use(validationHelper);
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 

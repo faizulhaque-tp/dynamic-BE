@@ -5,13 +5,9 @@ var uniqueValidator = require('mongoose-unique-validator');
 
 var userSchema = new Schema ({
 	_id :Number,
-	name:  { type: String, required: true, unique: true }
+	name:  { type: String  }
 });
 userSchema.plugin(uniqueValidator);
-userSchema.path('name').validate(function (v) {
-  return v.length > 5;
-}, 'my error type'); 
-
 
 userSchema.pre('save', function(next) {
 var counterModel  = require('./counter');

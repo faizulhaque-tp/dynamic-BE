@@ -25,17 +25,19 @@ exports.saveUser =  function(devloperName,userName,password,appName){
 	       	        userId: user._id,    
 			createdAt: new Date().getTime()
 		});
-		return	Promise.all([userAccount.save(),appObj.save()]).spread(function(a, b){
-return {
-results: {
-a: a,
-b: b,
-c: value
-}
-};
-});
+		return	Promise.all([userAccount.save(),appObj.save()]);
+						/*.spread(function(a, b){
+							return {
+								results: {
+									a: a,
+									b: b,
+									c: value
+									}
+								};
+								});
+						*/
 	})
-	.then(function(value){
+	/*.then(function(value){
 		console.log('comming transaction'+value);
 //		value.db.db.command(“commitTransaction”);
 	}).catch( function(error){
@@ -44,7 +46,7 @@ c: value
 		throw error;
 		
 
-	} );
+	} ); */
 
 }
 
