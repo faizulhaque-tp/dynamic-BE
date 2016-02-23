@@ -1,4 +1,5 @@
 var mongoose = require('mongoose');
+mongoose.Promise = require('bluebird');
 var Schema = mongoose.Schema;
 
 var rules = new Schema ({
@@ -16,9 +17,9 @@ var collections = new Schema ({
 
 var apiSchema = new Schema ({
 	_id:Number,
-	name: String,
-	key: String,
-	secret: String,
+	name: { type: String, required: true, unique: true },
+	key: { type: String, required: true},
+	secret: { type: String, required: true} ,
 	domains: Array,
 	isActive: Boolean,
 	isDeleted: Boolean,
@@ -30,6 +31,28 @@ var apiSchema = new Schema ({
 	updatedBy: Number
 
 });
+
+
+
+apiSchema.pre('save', function(next) {
+var counterModel  = require('./counter');
+    var doc = this;
+    counterModel.findByIdAndUpdate({_id: 'appId'}, {$inc: { seq: 1} }, function(error, counterModel)   {
+        if(error)
+            return next(error);
+	if(!(counterModel)){
+	var newCounterModel  = require('./counter');
+		var firstCounter  = 	new newCounterModel({'_id':'appId','seq':2});
+		firstCounter.save();
+	       doc._id = 1;
+	}else
+        doc._id = counterModel.seq || 1;
+       next();
+    });
+});
+
+
+
 
 var myApp = mongoose.model('myApp',apiSchema)
 module.exports = myApp;

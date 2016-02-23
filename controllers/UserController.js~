@@ -1,0 +1,26 @@
+exports.Register = function (req,res){
+/*	var util = require('util');
+	req.checkBody('postparam', 'Invalid postparam').notEmpty().isInt()
+	 var errors = req.validationErrors();
+  	if (errors) {
+	    res.send('There have been validation errors: ' + util.inspect(errors), 400);
+	    return;
+	}
+*/
+	var myApp = require('../models/user');
+	var app1  = new myApp({
+	 '_id':23123122,
+	 'name':'test'
+	});
+	var error = app1.validateSync();
+
+// prints 'Validator "Invalid color" failed for path color with value `grease`'
+	console.log(error);
+
+	app1.save(function(err) {
+	  if (err) //throw err;
+	console.log(err);
+	  console.log('User saved successfully!');
+	});
+	  res.render('index', { title: 'Express' });
+}
