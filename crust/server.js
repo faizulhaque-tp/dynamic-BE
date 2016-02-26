@@ -4,9 +4,10 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-var validationHelper = require('./helpers/express_validation');
-
+var validationHelper = require('./../lib/helpers/express_validation');
+var application = require('./routes/application');
 var mongoose = require('mongoose');
+var expressValidator = require('express-validator')
 
 mongoose.connect('mongodb://localhost/myappdatabase');
 
@@ -22,16 +23,14 @@ app.set('view engine', 'jade');
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(bodyParser());
-//app.use(bodyParser.urlencoded({ extended: false }));
-//app.use(expressValidator());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(expressValidator());
 app.use(validationHelper);
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-
-app.use('/', routes);
-//app.use('/users', users);
-//app.get('users/register', users);
+//routes are declared here
+app.use('/', [routes,application]);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -46,6 +45,7 @@ app.use(function(req, res, next) {
 // will print stacktrace
 if (app.get('env') === 'development') {
   app.use(function(err, req, res, next) {
+    console.log(err);
     res.status(err.status || 500);
     res.render('error', {
       message: err.message,

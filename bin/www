@@ -4,7 +4,7 @@
  * Module dependencies.
  */
 
-var app = require('../app');
+var app = require('../crust/server');
 var debug = require('debug')('dynamic-BE:server');
 var http = require('http');
 
