@@ -1,4 +1,7 @@
 var mongoose = require('mongoose');
+mongoose.Promise = require('bluebird');
+
+
 var Schema = mongoose.Schema;
 
 var tokenLookUpSchema = new Schema ({
@@ -9,5 +12,5 @@ var tokenLookUpSchema = new Schema ({
 
 });
 
-var tokenLookUp = mongoose.model('collections',tokenLookUpSchema)
+var tokenLookUp = mongoose.model('tokenLookUp',tokenLookUpSchema)
 module.exports = tokenLookUp;

@@ -5,7 +5,7 @@ var uniqueValidator = require('mongoose-unique-validator');
 
 var userSchema = new Schema ({
 	_id :Number,
-	name:  { type: String  }
+	name:  { type: String,require  }
 });
 userSchema.plugin(uniqueValidator);
 

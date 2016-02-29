@@ -13,5 +13,14 @@ var accountLookUp = new Schema ({
 
 });
 
+accountLookUp.statics.Authenticate = function(username,password){
+
+	return this.findOne({'accountId':username,'password':password,'isActive':1,'isDeleted':0});
+		
+
+	
+
+};
+
 var account = mongoose.model('account',accountLookUp)
 module.exports = account;

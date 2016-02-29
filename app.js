@@ -1,3 +1,5 @@
+global.config = require('./config');
+
 var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
@@ -5,14 +7,18 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var validationHelper = require('./helpers/express_validation');
-
+var AppErrors    = require('./helpers/apperrors');
 var mongoose = require('mongoose');
-
-mongoose.connect('mongodb://localhost/myappdatabase');
+var jwt    = require('jsonwebtoken');
+mongoose.connect(config.dbUrl);
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
+var apiRoutes = require('./routes/api');
 var app = express();
+
+// seting secret for using in api 
+app.set('apisecret',config.secret);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -25,11 +31,19 @@ app.use(bodyParser());
 //app.use(bodyParser.urlencoded({ extended: false }));
 //app.use(expressValidator());
 app.use(validationHelper);
+
+
+
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-
 app.use('/', routes);
+app.use('/api', apiRoutes);
+//app.use('/test', apiRoutes);
+
+
+
+
 //app.use('/users', users);
 //app.get('users/register', users);
 
@@ -46,9 +60,12 @@ app.use(function(req, res, next) {
 // will print stacktrace
 if (app.get('env') === 'development') {
   app.use(function(err, req, res, next) {
+    console.log('httpCode'+err.httpCode);
+    console.log('test'+err);
     res.status(err.status || 500);
+    console.log('inside error'+err.error_message);
     res.render('error', {
-      message: err.message,
+      message: err.error_message,
       error: err
     });
   });
