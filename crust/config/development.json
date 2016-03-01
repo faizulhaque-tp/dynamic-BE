@@ -1,0 +1,5 @@
+{
+
+	"dbUrl":"mongodb://localhost/myappdatabase",
+	"secret":"silenceisgolden"
+}
