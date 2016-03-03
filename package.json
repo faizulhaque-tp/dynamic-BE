@@ -16,6 +16,7 @@
     "jsonwebtoken": "^5.7.0",
     "mongoose": "^4.4.3",
     "mongoose-unique-validator": "^1.0.0",
+    "mongoose-timestamp": "git+https://github.com/raja-sami-10p/mongoose-timestamp.git",
     "morgan": "~1.6.1",
     "random-key": "^0.3.2",
     "serve-favicon": "~2.3.0",
