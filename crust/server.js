@@ -1,24 +1,23 @@
 'use strict';
 global.config = require('./config');
-var express = require('express');
-var path = require('path');
-var favicon = require('serve-favicon');
-var logger = require('morgan');
-var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
-var validationHelper = require('./../lib/helpers/express_validation');
-var AppErrors    = require('../lib/errors/index');
-var mongoose = require('mongoose');
+const express = require('express');
+const path = require('path');
+const favicon = require('serve-favicon');
+const logger = require('morgan');
+const cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser');
+const validationHelper = require('./../lib/helpers/express_validation');
+const mongoose = require('mongoose');
 mongoose.connect(config.dbUrl);
 
-var jwt    = require('jsonwebtoken');
-var application = require('./routes/application');
-var user = require('./routes/user');
+const jwt = require('jsonwebtoken');
+const application = require('./routes/application');
+const user = require('./routes/user');
 //var apiRoutes = require('./routes/api');
 var app = express();
 
 // seting secret for using in api 
-app.set('apisecret',config.secret);
+app.set('apisecret', config.secret);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -28,7 +27,7 @@ app.set('view engine', 'jade');
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(bodyParser());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({extended: false}));
 app.use(validationHelper);
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
@@ -37,8 +36,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/api', [user, application]);
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
-  var err = new Error('Not Found');
+app.use(function (req, res, next) {
+  let err = new Error('Not Found');
   err.status = 404;
   next(err);
 });
@@ -48,7 +47,7 @@ app.use(function(req, res, next) {
 // development error handler
 // will print stacktrace
 if (app.get('env') === 'development') {
-  app.use(function(err, req, res, next) {
+  app.use(function (err, req, res, next) {
     console.log(err);
     res.status(err.status || 500);
     res.json({
@@ -59,7 +58,7 @@ if (app.get('env') === 'development') {
 
 // production error handler
 // no stacktraces leaked to user
-app.use(function(err, req, res, next) {
+app.use(function (err, req, res, next) {
   res.status(err.status || 500);
   res.json({
     message: err.message,
