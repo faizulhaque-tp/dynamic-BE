@@ -1,7 +1,7 @@
 'use strict';
 const express = require('express');
 const router = express.Router();
-const user = require('../controllers/UserController');
+const user = require('../controllers/user');
 const authenticate = require('../middleware/auth');
 
 router.post('/register', user.register);

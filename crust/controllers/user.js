@@ -1,8 +1,11 @@
 'use strict';
-var util = require('util');
-var userFacade = require('../../lib/facade/UserFacade');
-var auth = require('../middleware/auth');
+const util = require('util');
+const userFacade = require('../../lib/facade/user');
+const auth = require('../middleware/auth');
 const errorHandler = require('../../lib/errors/index');
+const user = require('../../lib/models/User');
+const app = require('../../lib/models/App');
+const accountLoopUp = require('../../lib/models/AccountLookUp');
 
 module.exports = {
   logout,
@@ -11,19 +14,11 @@ module.exports = {
 };
 
 function logout(req, res, next) {
-  req.checkBody('userId', 'UserID cannot be empty.').notEmpty();
-  req.checkBody('userId', 'UserID type is invalid').isInt();
-  var errors = req.validationErrors();
-  if (errors) {
-    throw new errorHandler.badRequest(errors);
-  }
   userFacade.logOutUser(req.body.userId, req.body.token || req.query.token || req.headers['x-access-token'])
     .then(function () {
-      res.status(200).send('User Logged out successuflly');
+      res.status(200).json({message: "User Logged out successfully"});
     })
-    .catch(function (err) {
-      next(err);
-    });
+    .catch(next);
 }
 
 function login(req, res, next) {
@@ -31,27 +26,22 @@ function login(req, res, next) {
   req.checkBody('userName', 'User Name is required').notEmpty();
   req.checkBody('password', 'Password is required').notEmpty();
 
-  var errors = req.validationErrors();
+  let errors = req.validationErrors();
   if (errors) {
     throw new errorHandler.badRequest(errors);
   }
-  userFacade.createToken(req.body.userName, req.body.password)
-    .then(function (value) {
-      if (value.token) {
-        value.message = 'Token Created successuflly';
-        res.status(201).send(value);
-      }
-    })
-    .catch(function (err) {
-      next(err)
-    });
+
+  /**Call user service for authenticating user for login.
+  Retrieve token for the authenticated user.*/
+  let token = new userFacade.getOrCreateToken();
+  token.retrieveToken(req.body.userName, req.body.password)
+  .then((resolve) => {
+    res.status(resolve.status).json({token: resolve.token});
+  })
+  .catch(next);
 }
 
-function register(req, res) {
-
-  var user = require('../../lib/models/User');
-  var app = require('../../lib/models/App');
-  var accountLoopUp = require('../../lib/models/AccountLookUp');
+function register(req, res, next) {
 
   req.checkBody('devloperName', 'Developer Name  is required').notEmpty();
   req.checkBody('userName', 'User Name is required').notEmpty();
@@ -64,15 +54,8 @@ function register(req, res) {
     .then(function () {
       userFacade.saveUser(req.body.devloperName, req.body.userName, req.body.password, req.body.appName)
         .then(function () {
-          res.status(200).end('User saved');
+          res.status(200).json({message: "User successfully registered"});
         })
-        .catch(function (error) {
-          throw new errorHandler.badRequest(errors);
-        });
     })
-    .catch(function (errors) {
-      console.log('async');
-      throw new errorHandler.badRequest(errors);
-    });
-
+    .catch(next(new errorHandler.badRequest(errors)));
 }

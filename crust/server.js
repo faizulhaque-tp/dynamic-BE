@@ -1,19 +1,18 @@
 'use strict';
 global.config = require('./config');
-var express = require('express');
-var path = require('path');
-var favicon = require('serve-favicon');
-var logger = require('morgan');
-var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
-var validationHelper = require('./../lib/helpers/express_validation');
-var AppErrors    = require('../lib/errors/index');
-var mongoose = require('mongoose');
+const express = require('express');
+const path = require('path');
+const favicon = require('serve-favicon');
+const logger = require('morgan');
+const cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser');
+const validationHelper = require('./../lib/helpers/express_validation');
+const mongoose = require('mongoose');
 mongoose.connect(config.dbUrl);
 
-var jwt    = require('jsonwebtoken');
-var application = require('./routes/application');
-var user = require('./routes/user');
+const jwt    = require('jsonwebtoken');
+const application = require('./routes/application');
+const user = require('./routes/user');
 //var apiRoutes = require('./routes/api');
 var app = express();
 
@@ -38,7 +37,7 @@ app.use('/api', [user, application]);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
-  var err = new Error('Not Found');
+  let err = new Error('Not Found');
   err.status = 404;
   next(err);
 });
