@@ -24,7 +24,7 @@ function createApp(req, res, next) {
 
 function updateApp(req, res, next) {
   applicationService.updateApp(req.body, req.params.appId)
-  .then((response) => {
-    res.status(200).json(response);
-  }).catch(next);
+    .then((response) => {
+      res.status(200).json(response);
+    }).catch(next);
 }

@@ -32,13 +32,13 @@ function login(req, res, next) {
   }
 
   /**Call user service for authenticating user for login.
-  Retrieve token for the authenticated user.*/
+   Retrieve token for the authenticated user.*/
   let token = new userFacade.getOrCreateToken();
   token.retrieveToken(req.body.userName, req.body.password)
-  .then((resolve) => {
-    res.status(resolve.status).json({token: resolve.token});
-  })
-  .catch(next);
+    .then((resolve) => {
+      res.status(resolve.status).json({token: resolve.token});
+    })
+    .catch(next);
 }
 
 function register(req, res, next) {
