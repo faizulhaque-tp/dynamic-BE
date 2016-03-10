@@ -23,14 +23,14 @@ function getAppListing(req, res, next) {
 function createApp(req, res, next) {
   applicationService.createApp(req.body)
     .then((response) => {
-      res.status(201).json({message: "App successfully created"});
+      res.status(201).json(response);
     }).catch(next);
 }
 
 function updateApp(req, res, next) {
   applicationService.updateApp(req.body, req.params.appId)
     .then((response) => {
-      res.status(200).json({message: "App successfully updated"});
+      res.status(200).json(response);
     }).catch(next);
 }
 

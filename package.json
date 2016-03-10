@@ -5,6 +5,10 @@
   "scripts": {
     "start": "node ./bin/www"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/faizulhaque-tp/dynamic-BE.git"
+  },
   "dependencies": {
     "bluebird": "^3.3.1",
     "body-parser": "~1.13.2",
@@ -19,8 +23,6 @@
     "mongoose-unique-validator": "^1.0.0",
     "morgan": "~1.6.1",
     "random-key": "^0.3.2",
-    "serve-favicon": "~2.3.0",
-    "uranus": "latest"
-  },
-  "devDependencies": {}
+    "uranus": "~1.5.0"
+  }
 }
