@@ -14,7 +14,7 @@ const application = require('./routes/application');
 const user = require('./routes/user');
 var app = express();
 
-// seting secret for using in api 
+// seting secret for using in api
 app.set('apisecret', config.secret);
 
 // view engine setup
