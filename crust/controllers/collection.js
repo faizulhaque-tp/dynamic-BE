@@ -14,7 +14,7 @@ function getCollectionListing(req, res, next) {
     .then(function (response) {
       return res.status(200).json({
         data: response,
-        meta: [{length: response.length}]
+        meta: {length: response.length}
       });
     }).catch(next);
 }
@@ -22,7 +22,7 @@ function getCollectionListing(req, res, next) {
 function createCollection(req, res, next) {
   collectionService.createCollection(req.body, req.params.appId)
     .then((response) => {
-      res.status(201).json(response[0]);
+      res.status(201).json(response);
     }).catch(next);
 }
 

@@ -15,7 +15,7 @@ function getAppListing(req, res, next) {
     .then(function (response) {
       return res.status(200).json({
         data: response,
-        meta: [{length: response.length}]
+        meta: {length: response.length}
       });
     }).catch(next);
 }
