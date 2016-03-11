@@ -12,6 +12,7 @@ mongoose.connect(config.dbUrl);
 const jwt = require('jsonwebtoken');
 const application = require('./routes/application');
 const user = require('./routes/user');
+const collection = require('./routes/collection');
 var app = express();
 
 // seting secret for using in api
@@ -29,7 +30,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 //routes are declared here
-app.use('/api', [user, application]);
+app.use('/api', [user, application, collection]);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
