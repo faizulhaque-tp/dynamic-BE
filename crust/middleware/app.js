@@ -7,7 +7,7 @@ module.exports = {
 };
 
 function verifyApp(req, res, next) {
-  req.checkParams('appId', 'Invalid AppId').isNumeric().len(19,19);
+  req.checkParams('appId', 'Invalid AppId').isNumeric().len(15,15);
   var errors = req.validationErrors();
   if (errors) {
     next(new errorHandler.badRequest(errors));
