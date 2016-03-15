@@ -12,18 +12,19 @@ function verifyToken(req, res, next) {
   // verifies secret and checks exp
   jwt.verify(token, config.secret, function (err) {
     if (err) {
-      next(new errorHandler.unAuthenticatedError(err));
+      return next(new errorHandler.unAuthenticatedError(err));
     } else {
       tokenLookUp.findOne({accessToken: token}).exec(function (err, result) {
         if (err) {
-          next(new errorHandler.unAuthenticatedError(err));
+          return next(new errorHandler.unAuthenticatedError(err));
         } else if (result && result.userId) {
           //add user id to body once the token is validated for that user.
           req.body.userId = result.userId;
-          next();
-        } else next(new errorHandler.unAuthenticatedError(errorHandler.messages.USER_NOT_FOUND));
+          return next();
+        } else {
+          return next(new errorHandler.unAuthenticatedError(errorHandler.messages.USER_NOT_FOUND));
+        }
       });
     }
   });
 }
-
